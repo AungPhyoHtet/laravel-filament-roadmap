@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/dss/Library/Application Support/Herd/bin/php83",
+            "args": [
+                "/Users/dss/Herd/laravel-filament-roadmap/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

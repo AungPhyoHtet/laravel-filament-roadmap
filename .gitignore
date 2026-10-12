@@ -1,0 +1,56 @@
+# Dependencies
+/vendor
+/node_modules
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+/auth.json
+/storage/*.key
+*.pem
+
+# Build & published assets
+/public/build
+/public/hot
+/public/storage
+/public/css/filament
+/public/js/filament
+/public/fonts/filament
+/public/fonts-manifest.dev.json
+
+# Storage & runtime
+/storage/pail
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Testing & coverage
+/.phpunit.cache
+.phpunit.result.cache
+/coverage
+/build/logs
+.pest/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log
+
+# IDE & OS
+/.idea
+/.vscode
+/.zed
+/.fleet
+/.nova
+.phpactor.json
+_ide_helper*.php
+.phpstorm.meta.php
+.DS_Store
+Thumbs.db
+
+# Local dev tools
+Homestead.json
+Homestead.yaml
+/.codex
+/.cursor/
+.claude/settings.local.json
