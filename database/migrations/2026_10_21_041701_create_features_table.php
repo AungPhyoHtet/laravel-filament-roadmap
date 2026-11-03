@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\FeatureStatus;
+use App\Enums\FeatureType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,8 +16,8 @@ return new class extends Migration
         Schema::create('features', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
-            $table->string('status')->default('Proposed');
-            $table->string('type')->default('Feature');
+            $table->string('status')->default(FeatureStatus::Proposed->value);
+            $table->string('type')->default(FeatureType::Feature->value);
             $table->text('description');
             $table->smallInteger('effort_in_days')->unsigned()->default(0);
             $table->smallInteger('priority')->unsigned()->default(0);

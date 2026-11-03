@@ -27,6 +27,7 @@ class FeatureForm
                     ->required(),
                 Select::make('status')
                     ->options(FeatureStatus::class)
+                    ->searchable()
                     ->default(FeatureStatus::Proposed)
                     ->required(),
                 Textarea::make('description')

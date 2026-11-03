@@ -29,9 +29,20 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->unsavedChangesAlerts()
+            ->databaseTransactions()
+            ->registration()
+            ->passwordReset()
+            ->profile()
+            ->emailVerification()
+            ->emailChangeVerification()
             ->login()
+            ->brandLogo(asset('images/roadmap-light.png'))
+            ->darkModeBrandLogo(asset('images/roadmap-dark.png'))
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::convertToOklch('#4397cb'),
+                'gray' => Color::Slate,
+                'info' => Color::Violet,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

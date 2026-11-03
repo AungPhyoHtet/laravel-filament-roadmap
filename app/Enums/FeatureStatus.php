@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Icons\Heroicon;
 
-enum FeatureStatus: string implements HasColor, HasLabel
+enum FeatureStatus: string implements HasColor, HasIcon, HasLabel
 {
     case Proposed = 'Proposed';
     case Planned = 'Planned';
@@ -28,6 +30,17 @@ enum FeatureStatus: string implements HasColor, HasLabel
             self::InProgress => 'warning',
             self::Delivered => 'success',
             self::Cancelled => 'danger',
+        };
+    }
+
+    public function getIcon(): Heroicon
+    {
+        return match ($this) {
+            self::Proposed => Heroicon::OutlinedLightBulb,
+            self::Planned => Heroicon::OutlinedCalendarDays,
+            self::InProgress => Heroicon::OutlinedArrowPath,
+            self::Delivered => Heroicon::OutlinedCheckCircle,
+            self::Cancelled => Heroicon::OutlinedXCircle,
         };
     }
 }
