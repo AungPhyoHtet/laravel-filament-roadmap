@@ -23,7 +23,7 @@ class FeatureFactory extends Factory
             'name' => fake()->sentence(4),
             'status' => FeatureStatus::Proposed,
             'type' => fake()->randomElement(FeatureType::cases()),
-            'description' => fake()->paragraph(),
+            'description' => '<p>'.fake()->paragraph().'</p>',
             'effort_in_days' => fake()->numberBetween(1, 30),
             'priority' => fake()->numberBetween(0, 10),
             'cost' => fake()->randomFloat(2, 0, 50000),

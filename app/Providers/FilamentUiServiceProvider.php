@@ -57,6 +57,7 @@ class FilamentUiServiceProvider extends ServiceProvider
 
         // US based phone input, adjust for different countries
         \Filament\Forms\Components\TextInput::macro('phone', function () {
+            /** @var \Filament\Forms\Components\TextInput $this */
             return $this->mask('(999) 999-9999')
                 ->prefixIcon('heroicon-o-phone')
                 ->tel()

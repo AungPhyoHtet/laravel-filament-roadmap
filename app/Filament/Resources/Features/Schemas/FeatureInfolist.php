@@ -18,6 +18,7 @@ class FeatureInfolist
                 TextEntry::make('status')
                     ->badge(),
                 TextEntry::make('description')
+                    ->html()
                     ->columnSpanFull(),
                 TextEntry::make('effort_in_days')
                     ->label('Effort')
