@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\EditProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -31,9 +32,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->unsavedChangesAlerts()
             ->databaseTransactions()
+            ->strictAuthorization()
             ->registration()
             ->passwordReset()
-            ->profile()
+            ->profile(EditProfile::class, isSimple: false)
             ->emailVerification()
             ->emailChangeVerification()
             ->login()
