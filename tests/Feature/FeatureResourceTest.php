@@ -9,6 +9,7 @@ use App\Filament\Resources\Features\Pages\EditFeature;
 use App\Filament\Resources\Features\Pages\ListFeatures;
 use App\Filament\Resources\Features\Pages\ViewFeature;
 use App\Models\Feature;
+use App\Models\Milestone;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -49,6 +50,9 @@ it('creates a feature', function (): void {
             'priority' => 3,
             'cost' => 1250.50,
             'target_delivery_date' => '2026-12-01',
+            'milestones' => [
+                ['name' => 'Beta release', 'due_date' => '2026-11-20', 'is_completed' => false],
+            ],
         ])
         ->call('create')
         ->assertHasNoFormErrors();
@@ -60,7 +64,8 @@ it('creates a feature', function (): void {
         ->and($feature->status)->toBe(FeatureStatus::Planned)
         ->and($feature->effort_in_days)->toBe(5)
         ->and($feature->cost)->toBe('1250.50')
-        ->and($feature->target_delivery_date->toDateString())->toBe('2026-12-01');
+        ->and($feature->target_delivery_date->toDateString())->toBe('2026-12-01')
+        ->and($feature->milestones()->sole()->name)->toBe('Beta release');
 });
 
 it('requires a name and description', function (): void {
@@ -71,7 +76,7 @@ it('requires a name and description', function (): void {
 });
 
 it('updates a feature', function (): void {
-    $feature = Feature::factory()->create();
+    $feature = Feature::factory()->has(Milestone::factory())->create();
 
     Livewire::test(EditFeature::class, ['record' => $feature->getRouteKey()])
         ->assertSchemaStateSet(['name' => $feature->name])
@@ -88,4 +93,44 @@ it('shows a feature', function (): void {
 
     Livewire::test(ViewFeature::class, ['record' => $feature->getRouteKey()])
         ->assertSee($feature->name);
+});
+
+it('saves milestones to the feature', function (): void {
+    $feature = Feature::factory()->create();
+
+    Livewire::test(EditFeature::class, ['record' => $feature->getRouteKey()])
+        ->fillForm([
+            'milestones' => [
+                ['name' => 'Beta release', 'due_date' => '2026-12-01', 'is_completed' => true],
+                ['name' => 'General availability', 'due_date' => '2027-01-15', 'is_completed' => false],
+            ],
+        ])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    $milestones = $feature->milestones()->orderBy('due_date')->get();
+
+    expect($milestones)->toHaveCount(2)
+        ->and($milestones[0]->name)->toBe('Beta release')
+        ->and($milestones[0]->is_completed)->toBeTrue()
+        ->and($milestones[1]->due_date->toDateString())->toBe('2027-01-15');
+});
+
+it('loads existing milestones into the form', function (): void {
+    $feature = Feature::factory()->has(Milestone::factory()->count(2))->create();
+
+    $milestoneNames = collect(
+        Livewire::test(EditFeature::class, ['record' => $feature->getRouteKey()])->get('data.milestones')
+    )->pluck('name')->sort()->values()->all();
+
+    expect($milestoneNames)->toBe($feature->milestones->pluck('name')->sort()->values()->all());
+});
+
+it('requires at least one milestone', function (): void {
+    $feature = Feature::factory()->create();
+
+    Livewire::test(EditFeature::class, ['record' => $feature->getRouteKey()])
+        ->fillForm(['milestones' => []])
+        ->call('save')
+        ->assertHasFormErrors(['milestones' => 'min']);
 });

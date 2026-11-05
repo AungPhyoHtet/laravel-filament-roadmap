@@ -25,7 +25,7 @@ class FeatureFactory extends Factory
             'type' => fake()->randomElement(FeatureType::cases()),
             'description' => '<p>'.fake()->paragraph().'</p>',
             'effort_in_days' => fake()->numberBetween(1, 30),
-            'priority' => fake()->numberBetween(0, 10),
+            'priority' => fake()->numberBetween(1, 10),
             'cost' => fake()->randomFloat(2, 0, 50000),
             'target_delivery_date' => fake()->dateTimeBetween('now', '+6 months'),
             'delivered_at' => null,
