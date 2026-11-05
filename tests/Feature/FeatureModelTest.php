@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 use App\Enums\FeatureStatus;
 use App\Enums\FeatureType;
+use App\Models\Comment;
 use App\Models\Feature;
 use App\Models\Milestone;
+use App\Models\Vote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 
@@ -43,4 +45,16 @@ it('has many milestones that are deleted with the feature', function (): void {
     $feature->delete();
 
     expect(Milestone::count())->toBe(0);
+});
+
+it('deletes comments and votes along with the feature', function (): void {
+    $feature = Feature::factory()
+        ->has(Comment::factory()->count(2))
+        ->has(Vote::factory()->count(2))
+        ->create();
+
+    $feature->delete();
+
+    expect(Comment::count())->toBe(0)
+        ->and(Vote::count())->toBe(0);
 });

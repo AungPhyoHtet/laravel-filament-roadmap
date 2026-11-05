@@ -17,7 +17,7 @@ use Livewire\Livewire;
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->admin()->create());
 });
 
 it('lists features', function (): void {
@@ -133,4 +133,10 @@ it('requires at least one milestone', function (): void {
         ->fillForm(['milestones' => []])
         ->call('save')
         ->assertHasFormErrors(['milestones' => 'min']);
+});
+
+it('stops non-admins from creating features', function (): void {
+    $this->actingAs(User::factory()->create());
+
+    Livewire::test(CreateFeature::class)->assertForbidden();
 });

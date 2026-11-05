@@ -28,7 +28,7 @@ class FeaturePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -36,7 +36,7 @@ class FeaturePolicy
      */
     public function update(User $user, Feature $feature): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -44,12 +44,12 @@ class FeaturePolicy
      */
     public function delete(User $user, Feature $feature): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     public function deleteAny(User $user): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -57,7 +57,7 @@ class FeaturePolicy
      */
     public function restore(User $user, Feature $feature): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -65,11 +65,11 @@ class FeaturePolicy
      */
     public function forceDelete(User $user, Feature $feature): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     public function test(User $user): bool
     {
-        return true;
+        return $user->is_admin;
     }
 }

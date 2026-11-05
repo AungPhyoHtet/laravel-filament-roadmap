@@ -29,6 +29,26 @@ class Feature extends Model
     use HasFactory;
 
     /**
+     * Get the comments left on this feature.
+     *
+     * @return HasMany<Comment, $this>
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the votes cast for this feature.
+     *
+     * @return HasMany<Vote, $this>
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    /**
      * Get the milestones for this feature.
      *
      * @return HasMany<Milestone, $this>

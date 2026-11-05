@@ -18,8 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::firstOrCreate(
             ['email' => 'test@example.com'],
             User::factory()->raw([
@@ -29,6 +27,13 @@ class DatabaseSeeder extends Seeder
             ]),
         );
 
+        User::factory(10)->create();
+
         Feature::factory(10)->create();
+
+        $this->call([
+            CommentSeeder::class,
+            VoteSeeder::class,
+        ]);
     }
 }
