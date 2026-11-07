@@ -12,17 +12,21 @@ class CommentPolicy
     /**
      * Determine whether the user can view any comments.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
 
     /**
-     * Determine whether the user can view the comment.
+     * Approved comments are public; pending ones are visible only to their author and admins.
      */
-    public function view(User $user, Comment $comment): bool
+    public function view(?User $user, Comment $comment): bool
     {
-        return true;
+        if ($comment->is_approved) {
+            return true;
+        }
+
+        return $user !== null && ($user->is_admin || $comment->user()->is($user));
     }
 
     /**
@@ -47,6 +51,22 @@ class CommentPolicy
     public function delete(User $user, Comment $comment): bool
     {
         return $user->is_admin || $comment->user()->is($user);
+    }
+
+    /**
+     * Determine whether the user can approve or reject the comment.
+     */
+    public function approve(User $user, Comment $comment): bool
+    {
+        return $user->is_admin;
+    }
+
+    /**
+     * Determine whether the user can bulk approve or reject comments.
+     */
+    public function approveAny(User $user): bool
+    {
+        return $user->is_admin;
     }
 
     /**

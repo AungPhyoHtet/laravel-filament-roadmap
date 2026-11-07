@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommentsRelationManager extends RelationManager
 {
@@ -24,12 +25,15 @@ class CommentsRelationManager extends RelationManager
     {
         return CommentsTable::configure($table)
             ->recordTitleAttribute('body')
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->visibleTo(auth()->user()))
             ->headerActions([
                 CreateAction::make()
-                    ->mutateDataUsing(fn (array $data): array => CommentForm::assignAuthor($data)),
+                    ->mutateDataUsing(fn (array $data): array => CommentForm::applyApproval(CommentForm::assignAuthor($data))),
             ])
             ->recordActions([
-                EditAction::make(),
+                ...CommentsTable::approvalActions(),
+                EditAction::make()
+                    ->mutateDataUsing(fn (array $data): array => CommentForm::applyApproval($data)),
                 DeleteAction::make(),
             ]);
     }

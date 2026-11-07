@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Feature;
@@ -8,17 +10,17 @@ use App\Models\User;
 class FeaturePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any models. Guests may browse the public roadmap.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the model. Guests may browse the public roadmap.
      */
-    public function view(User $user, Feature $feature): bool
+    public function view(?User $user, Feature $feature): bool
     {
         return true;
     }

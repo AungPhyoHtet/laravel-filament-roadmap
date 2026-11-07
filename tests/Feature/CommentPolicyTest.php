@@ -8,9 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('lets any user view and create comments', function (): void {
+it('lets any user view approved comments and create comments', function (): void {
     $user = User::factory()->create();
-    $comment = Comment::factory()->create();
+    $comment = Comment::factory()->approved()->create();
 
     expect($user->can('viewAny', Comment::class))->toBeTrue()
         ->and($user->can('view', $comment))->toBeTrue()

@@ -26,4 +26,24 @@ class CommentFactory extends Factory
             'is_approved' => fake()->boolean(),
         ];
     }
+
+    /**
+     * Indicate that the comment has been approved by an admin.
+     */
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_approved' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the comment is awaiting approval.
+     */
+    public function pending(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_approved' => false,
+        ]);
+    }
 }

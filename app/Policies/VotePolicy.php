@@ -12,7 +12,7 @@ class VotePolicy
     /**
      * Determine whether the user can view any votes.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -20,7 +20,7 @@ class VotePolicy
     /**
      * Determine whether the user can view the vote.
      */
-    public function view(User $user, Vote $vote): bool
+    public function view(?User $user, Vote $vote): bool
     {
         return true;
     }

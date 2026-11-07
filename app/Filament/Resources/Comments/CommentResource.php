@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommentResource extends Resource
 {
@@ -34,6 +35,16 @@ class CommentResource extends Resource
     public static function table(Table $table): Table
     {
         return CommentsTable::configure($table);
+    }
+
+    /**
+     * Non-admins only see approved comments and their own pending ones.
+     *
+     * @return Builder<Comment>
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->visibleTo(auth()->user());
     }
 
     public static function getRelations(): array

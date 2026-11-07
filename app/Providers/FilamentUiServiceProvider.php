@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\RichEditor;
+use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentColor;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -24,6 +26,13 @@ class FilamentUiServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // brand colours, registered globally so the admin panel and the public roadmap pages match
+        FilamentColor::register([
+            'primary' => Color::convertToOklch('#4397cb'),
+            'gray' => Color::Slate,
+            'info' => Color::Violet,
+        ]);
+
         // When a field has multiple words like "due_date", the label changes from "Due date" to "Due Date".
         \Filament\Forms\Components\Field::configureUsing(function (\Filament\Forms\Components\Field $field) {
             $field->label(function (\Filament\Schemas\Components\Component $component) {

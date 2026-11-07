@@ -16,6 +16,6 @@ class CreateComment extends CreateRecord
      */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        return CommentForm::assignAuthor($data);
+        return CommentForm::applyApproval(CommentForm::assignAuthor($data));
     }
 }

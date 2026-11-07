@@ -20,8 +20,8 @@ beforeEach(function (): void {
 });
 
 it('lists only the comments for the feature', function (): void {
-    $feature = Feature::factory()->has(Comment::factory()->count(2))->create();
-    $otherComment = Comment::factory()->create();
+    $feature = Feature::factory()->has(Comment::factory()->approved()->count(2))->create();
+    $otherComment = Comment::factory()->approved()->create();
 
     Livewire::test(CommentsRelationManager::class, [
         'ownerRecord' => $feature,
@@ -46,7 +46,8 @@ it('creates a comment on the feature as the current user', function (): void {
     $comment = $feature->comments()->sole();
 
     expect($comment->body)->toBe('Would love this in the mobile app too.')
-        ->and($comment->user->is($this->user))->toBeTrue();
+        ->and($comment->user->is($this->user))->toBeTrue()
+        ->and($comment->is_approved)->toBeFalse();
 });
 
 it('ignores a chosen author when a non-admin comments', function (): void {
